@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Country implements Serializable {
 
     @Id
@@ -23,11 +25,5 @@ public class Country implements Serializable {
     private Integer id;
 
     private String name;
-
-    private Integer cases;
-
-    private Integer deaths;
-
-    private Integer recovered;
 
 }

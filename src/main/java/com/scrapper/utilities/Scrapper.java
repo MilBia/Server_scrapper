@@ -1,76 +1,61 @@
 package com.scrapper.utilities;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 
+import com.scrapper.country.model.Country;
+import com.scrapper.infections.model.Infection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Scrapper {
-    public static void ReadCovid(){
+    private static Integer ParseToInteger(String text){
+        try
+        {
+            return Integer.parseInt(text.replace(",","").replace("+",""));
+        }
+        catch (NumberFormatException e)
+        {
+            return  0;
+        }
+    }
+
+    public static Collection<Infection> ReadCovid(){
         Document doc = null;
         try {
             doc = Jsoup.connect("https://www.worldometers.info/coronavirus/").get();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Elements mta_class = doc.getElementsByClass("mt_a");
-        ArrayList<String> countries = new ArrayList<String>();
-        ArrayList<String> allDataRead = new ArrayList<String>();
-        ArrayList<String> totalCases = new ArrayList<String>();
-        ArrayList<String> newCases = new ArrayList<String>();
-        ArrayList<String> totalDeaths = new ArrayList<String>();
-        ArrayList<String> newDeaths = new ArrayList<String>();
-        ArrayList<String> totalRecovered = new ArrayList<String>();
-        ArrayList<String> activeCases = new ArrayList<String>();
-        ArrayList<String> critical = new ArrayList<String>();
-        ArrayList<String> totalCasesPer1MPop = new ArrayList<String>();
-        ArrayList<String> deathsCasesPer1MPop = new ArrayList<String>();
-        ArrayList<String> totalTests = new ArrayList<String>();
-        ArrayList<String> testsPer1MPop = new ArrayList<String>();
-        ArrayList<String> continent = new ArrayList<String>();
-
-
-        Elements htmlLines = doc.select("td");
-        Boolean helperFlag = false;
-
-        //Read proper data to one array
-        for(Element el : htmlLines) {
-            if(helperFlag == true)
-                allDataRead.add(el.getElementsByTag("td").text());
-
-            if(el.getElementsByTag("td").text().equals("All"))
-                helperFlag = true;
+        Element table = doc.getElementById("main_table_countries_today");
+        Elements table_data = table.select("tbody").first().getElementsByTag("tr");
+        Collection<Infection> infections = new ArrayList<Infection>();
+        for (Element el : table_data) {
+            if(!el.className().contains("total_row_world")) {
+                Elements row = el.getElementsByTag("td");
+                Country country = new Country();
+                country.setName(row.get(0).text());
+                Infection infection = new Infection();
+                infection.setCountry(country);
+                infection.setCreationTime(LocalDateTime.now());
+                infection.setTotalCases(Scrapper.ParseToInteger(row.get(1).text()));
+                infection.setNewCases(Scrapper.ParseToInteger(row.get(2).text()));
+                infection.setTotalDeaths(Scrapper.ParseToInteger(row.get(3).text()));
+                infection.setNewDeaths(Scrapper.ParseToInteger(row.get(4).text()));
+                infection.setTotalRecovered(Scrapper.ParseToInteger(row.get(5).text()));
+                infection.setActiveCases(Scrapper.ParseToInteger(row.get(6).text()));
+                infection.setSeriousCritical(Scrapper.ParseToInteger(row.get(7).text()));
+                infection.setTotCases1Mpop(Scrapper.ParseToInteger(row.get(8).text()));
+                infection.setDeaths1Mpop(Scrapper.ParseToInteger(row.get(9).text()));
+                infection.setTotalTests(Scrapper.ParseToInteger(row.get(10).text()));
+                infection.setTests1Mpop(Scrapper.ParseToInteger(row.get(11).text()));
+                infections.add(infection);
+            }
         }
-
-        // Divide data. TODO: convert numbers to integers
-        for(int i = 0; i < allDataRead.size() / 2  - 160; i++) {
-            countries.add(allDataRead.get(i++));
-            totalCases.add(allDataRead.get(i++));
-            newCases.add(allDataRead.get(i++));
-            totalDeaths.add(allDataRead.get(i++));
-            newDeaths.add(allDataRead.get(i++));
-            totalRecovered.add(allDataRead.get(i++));
-            activeCases.add(allDataRead.get(i++));
-            critical.add(allDataRead.get(i++));
-            totalCasesPer1MPop.add(allDataRead.get(i++));
-            deathsCasesPer1MPop.add(allDataRead.get(i++));
-            totalTests.add(allDataRead.get(i++));
-            testsPer1MPop.add(allDataRead.get(i++));
-            continent.add(allDataRead.get(i++));
-            i--;
-        }
-
-
-        for(int i = 0; i <totalCases.size(); i++ ) {
-
-            System.out.println(countries.get(i) + " | " + totalCases.get(i) + " | " + newCases.get(i) + " | " + totalDeaths.get(i)+ " | "
-                    + newDeaths.get(i) + " | " + totalRecovered.get(i) + " | " + activeCases.get(i) + " | " + critical.get(i) + " | " +
-                    totalCasesPer1MPop.get(i)+ " | " + deathsCasesPer1MPop.get(i) + " | " + totalTests.get(i) + " | " + testsPer1MPop.get(i) + " | " +
-                    continent.get(i));
-
-        }
+        return infections;
     }
 }
