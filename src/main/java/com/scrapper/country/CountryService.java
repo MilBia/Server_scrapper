@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-public interface ConutryService {
+public interface CountryService {
 
     Optional<Country> getCountryById(Integer countryId) throws IllegalArgumentException;
 
