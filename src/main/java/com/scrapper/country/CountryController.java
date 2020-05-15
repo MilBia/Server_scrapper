@@ -1,6 +1,8 @@
 package com.scrapper.country;
 
 import com.scrapper.country.model.Country;
+import com.scrapper.infections.InfectionService;
+import com.scrapper.infections.model.Infection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/countries")
@@ -18,6 +21,9 @@ public class CountryController {
 
     @Autowired
     private ConutryService countryService;
+
+    @Autowired
+    private InfectionService infectionService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Collection<Country> getCountries(){
@@ -28,6 +34,24 @@ public class CountryController {
     public ResponseEntity<Country> getCountry(@PathVariable Integer id){
         return countryService.getCountryById(id).map(u -> new ResponseEntity<>(u, HttpStatus.OK)).
                 orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "{id}/infections", method = RequestMethod.GET)
+    public ResponseEntity<Collection<Infection>> getCountryInfection(@PathVariable Integer id){
+        Optional<Country> country = countryService.getCountryById(id);
+        if(!country.isEmpty()){
+            return new ResponseEntity<>(infectionService.getAllInfectionByCountry(country.get()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "{id}/infections_current", method = RequestMethod.GET)
+    public ResponseEntity<Infection> getCurrentCountryInfection(@PathVariable Integer id){
+        Optional<Country> country = countryService.getCountryById(id);
+        if(!country.isEmpty()){
+            return new ResponseEntity<>(infectionService.getCurrentInfectionByCountry(country.get()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

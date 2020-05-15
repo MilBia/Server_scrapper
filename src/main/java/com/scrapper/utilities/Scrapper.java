@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.scrapper.Continect.Continent;
 import com.scrapper.country.model.Country;
 import com.scrapper.infections.model.Infection;
 import org.jsoup.Jsoup;
@@ -38,21 +39,27 @@ public class Scrapper {
             if(!el.className().contains("total_row_world")) {
                 Elements row = el.getElementsByTag("td");
                 Country country = new Country();
-                country.setName(row.get(0).text());
+                country.setName(row.get(1).text());
+                String continent = row.get(14).text().toUpperCase().replace(" ","_").replace("/","_");
+                if(continent.equals(""))
+                    continue;
+                Continent continentObj = Continent.valueOf(continent);
+                country.setContinent(continentObj);
                 Infection infection = new Infection();
                 infection.setCountry(country);
                 infection.setCreationTime(LocalDateTime.now());
-                infection.setTotalCases(Scrapper.ParseToInteger(row.get(1).text()));
-                infection.setNewCases(Scrapper.ParseToInteger(row.get(2).text()));
-                infection.setTotalDeaths(Scrapper.ParseToInteger(row.get(3).text()));
-                infection.setNewDeaths(Scrapper.ParseToInteger(row.get(4).text()));
-                infection.setTotalRecovered(Scrapper.ParseToInteger(row.get(5).text()));
-                infection.setActiveCases(Scrapper.ParseToInteger(row.get(6).text()));
-                infection.setSeriousCritical(Scrapper.ParseToInteger(row.get(7).text()));
-                infection.setTotCases1Mpop(Scrapper.ParseToInteger(row.get(8).text()));
-                infection.setDeaths1Mpop(Scrapper.ParseToInteger(row.get(9).text()));
-                infection.setTotalTests(Scrapper.ParseToInteger(row.get(10).text()));
-                infection.setTests1Mpop(Scrapper.ParseToInteger(row.get(11).text()));
+                infection.setTotalCases(Scrapper.ParseToInteger(row.get(2).text()));
+                infection.setNewCases(Scrapper.ParseToInteger(row.get(3).text()));
+                infection.setTotalDeaths(Scrapper.ParseToInteger(row.get(4).text()));
+                infection.setNewDeaths(Scrapper.ParseToInteger(row.get(5).text()));
+                infection.setTotalRecovered(Scrapper.ParseToInteger(row.get(6).text()));
+                infection.setActiveCases(Scrapper.ParseToInteger(row.get(7).text()));
+                infection.setSeriousCritical(Scrapper.ParseToInteger(row.get(8).text()));
+                infection.setTotCases1Mpop(Scrapper.ParseToInteger(row.get(9).text()));
+                infection.setDeaths1Mpop(Scrapper.ParseToInteger(row.get(10).text()));
+                infection.setTotalTests(Scrapper.ParseToInteger(row.get(11).text()));
+                infection.setTests1Mpop(Scrapper.ParseToInteger(row.get(12).text()));
+                infection.setPopulation(Scrapper.ParseToInteger(row.get(13).text()));
                 infections.add(infection);
             }
         }

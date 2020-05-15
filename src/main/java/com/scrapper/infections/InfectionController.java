@@ -27,8 +27,8 @@ public class InfectionController {
     private ConutryService conutryService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Collection<Infection> getInfection(){
-        return infectionService.getAllInfection();
+    public ResponseEntity<Collection<Infection>> getInfection(){
+        return new ResponseEntity<>(infectionService.getAllInfection(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -40,6 +40,8 @@ public class InfectionController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Infection> addInfection(@RequestBody Infection infection){
         try {
+            Country country = conutryService.getCountryById(infection.getCountry().getId()).orElse(conutryService.addOrCreateCountry(infection.getCountry()));
+            infection.setCountry(country);
             return new ResponseEntity<>(infectionService.addInfection(infection), HttpStatus.OK);
         }
         catch (IllegalArgumentException e){
@@ -53,7 +55,7 @@ public class InfectionController {
         Collection<Infection> newInfections = new ArrayList<Infection>();
         try {
             for(Infection inf : infections){
-                Country country = conutryService.addCountry(inf.getCountry());
+                Country country = conutryService.addOrCreateCountry(inf.getCountry());
                 inf.setCountry(country);
                 Infection newInfection = infectionService.addInfection(inf);
                 newInfections.add(newInfection);

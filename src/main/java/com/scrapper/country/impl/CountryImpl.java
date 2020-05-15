@@ -1,5 +1,6 @@
 package com.scrapper.country.impl;
 
+import com.scrapper.Continect.Continent;
 import com.scrapper.country.ConutryService;
 import com.scrapper.country.model.Country;
 import com.scrapper.country.repository.CountryRepository;
@@ -24,6 +25,16 @@ public class CountryImpl implements ConutryService {
     }
 
     @Override
+    public Optional<Country> getCountryByName(String name) throws IllegalArgumentException {
+        return Optional.ofNullable(countryRepository.getCountryByName(name).get(0));
+    }
+
+    @Override
+    public Optional<Collection<Country>> getCountryByContinent(Continent continent) throws IllegalArgumentException {
+        return Optional.ofNullable(countryRepository.findByContinent(continent));
+    }
+
+    @Override
     public Collection<Country> getAllCountries() {
         return StreamSupport.stream(countryRepository.findAll().spliterator(), false).
                 collect(Collectors.toList());
@@ -31,7 +42,7 @@ public class CountryImpl implements ConutryService {
 
     @Override
     public Country addCountry(Country country) throws IllegalArgumentException {
-        if(country.getId() == null || !countryRepository.existsById(country.getId())) {
+        if(country.getId() == null || !countryRepository.existsById(country.getId()) || !countryRepository.getCountryByName(country.getName()).isEmpty()) {
             try {
                 return countryRepository.save(country);
             }
@@ -39,7 +50,25 @@ public class CountryImpl implements ConutryService {
                 throw  new IllegalArgumentException(e);
             }
         }else
-            throw new IllegalArgumentException("Table country already exist");
+            throw new IllegalArgumentException("Country already exist");
+    }
+
+    @Override
+    public Country addOrCreateCountry(Country country) throws IllegalArgumentException {
+        if(country.getId() == null && countryRepository.getCountryByName(country.getName()).isEmpty()) {
+            try {
+                return countryRepository.save(country);
+            }
+            catch (DataAccessException e){
+                throw  new IllegalArgumentException(e);
+            }
+        }else{
+            if(country.getId() != null)
+                return countryRepository.findById(country.getId()).get();
+            if(!countryRepository.getCountryByName(country.getName()).isEmpty())
+                return countryRepository.getCountryByName(country.getName()).get(0);
+        }
+            throw new IllegalArgumentException("Country already exist");
     }
 
     @Override

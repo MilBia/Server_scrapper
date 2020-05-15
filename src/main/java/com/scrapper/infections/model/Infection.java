@@ -54,4 +54,5 @@ public class Infection implements Serializable {
 
     private Integer tests1Mpop;
 
+    private Integer population;
 }

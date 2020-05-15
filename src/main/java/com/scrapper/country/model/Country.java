@@ -1,5 +1,6 @@
 package com.scrapper.country.model;
 
+import com.scrapper.Continect.Continent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,7 @@ public class Country implements Serializable {
     private Integer id;
 
     private String name;
+
+    private Continent continent;
 
 }
