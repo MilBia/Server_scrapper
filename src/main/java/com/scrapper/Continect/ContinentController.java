@@ -25,13 +25,13 @@ public class ContinentController {
         return new ResponseEntity<>( Arrays.asList(Continent.values()), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{name}/infections", method = RequestMethod.GET)
-    public ResponseEntity<Collection<Infection>> getCountryInfections(@PathVariable Continent continent){
-        return new ResponseEntity<>(infectionService.getAllInfectionForContinent(continent), HttpStatus.OK);
+    @RequestMapping(value = "{continent_name}/infections", method = RequestMethod.GET)
+    public ResponseEntity<Collection<Infection>> getCountryInfections(@PathVariable String continent_name){
+        return new ResponseEntity<>(infectionService.getAllInfectionForContinent(Continent.valueOf(continent_name.toUpperCase())), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{name}/infections_current", method = RequestMethod.GET)
-    public ResponseEntity<Collection<Infection>> getCurrentContinentInfections(@PathVariable Continent continent){
-        return new ResponseEntity<>(infectionService.getCurrentInfectionByContinent(continent), HttpStatus.OK);
+    @RequestMapping(value = "{continent_name}/infections_current", method = RequestMethod.GET)
+    public ResponseEntity<Collection<Infection>> getCurrentContinentInfections(@PathVariable String continent_name){
+        return new ResponseEntity<>(infectionService.getCurrentInfectionByContinent(Continent.valueOf(continent_name.toUpperCase())), HttpStatus.OK);
     }
 }
