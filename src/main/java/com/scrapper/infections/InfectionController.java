@@ -51,15 +51,16 @@ public class InfectionController {
 
     @RequestMapping(value = "/new_data", method = RequestMethod.GET)
     public ResponseEntity<Collection<Infection>> addNewInfection(){
-        Collection<Infection> infections = Scrapper.ReadCovid();
-        Collection<Infection> newInfections = new ArrayList<Infection>();
+//        Collection<Infection> infections = Scrapper.ReadCovid();
+//        Collection<Infection> newInfections = new ArrayList<Infection>();
         try {
-            for(Infection inf : infections){
-                Country country = conutryService.addOrCreateCountry(inf.getCountry());
-                inf.setCountry(country);
-                Infection newInfection = infectionService.addInfection(inf);
-                newInfections.add(newInfection);
-            }
+//            for(Infection inf : infections){
+//                Country country = conutryService.addOrCreateCountry(inf.getCountry());
+//                inf.setCountry(country);
+//                Infection newInfection = infectionService.addInfection(inf);
+//                newInfections.add(newInfection);
+//            }
+            Collection<Infection> newInfections = infectionService.addNewInfections();
             return new ResponseEntity<>(newInfections, HttpStatus.OK);
         }
             catch (IllegalArgumentException e){

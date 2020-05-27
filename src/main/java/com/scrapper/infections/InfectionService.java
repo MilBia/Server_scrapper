@@ -23,5 +23,7 @@ public interface InfectionService {
 
     Collection<Infection> getAllInfection();
 
+    Collection<Infection> addNewInfections();
+
     Infection addInfection(Infection country) throws IllegalArgumentException;
 }

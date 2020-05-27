@@ -6,8 +6,11 @@ import com.scrapper.country.repository.CountryRepository;
 import com.scrapper.infections.InfectionService;
 import com.scrapper.infections.model.Infection;
 import com.scrapper.infections.repository.InfectionRepository;
+import com.scrapper.utilities.Scrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -62,6 +65,29 @@ public class InfectionImpl implements InfectionService {
     public Collection<Infection> getAllInfection() {
         return StreamSupport.stream(infectionRepository.findAll().spliterator(), false).
                 collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Infection> addNewInfections() {
+        Collection<Infection> infections = Scrapper.ReadCovid();
+        Collection<Infection> newInfections = new ArrayList<Infection>();
+        for(Infection inf : infections){
+            Country country = null;
+            if(countryRepository.getCountryByName(inf.getCountry().getName()).isEmpty()) {
+                try {
+                    country = countryRepository.save(inf.getCountry());
+                }
+                catch (DataAccessException e){
+                    throw  new IllegalArgumentException(e);
+                }
+            }else{
+                country = countryRepository.getCountryByName(inf.getCountry().getName()).get(0);
+            }
+            inf.setCountry(country);
+            Infection newInfection = infectionRepository.save(inf);
+            newInfections.add(newInfection);
+        }
+        return newInfections;
     }
 
     @Override
