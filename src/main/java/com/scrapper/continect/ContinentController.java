@@ -1,4 +1,4 @@
-package com.scrapper.Continect;
+package com.scrapper.continect;
 
 import com.scrapper.infections.InfectionService;
 import com.scrapper.infections.model.Infection;

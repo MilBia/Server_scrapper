@@ -1,6 +1,6 @@
 package com.scrapper.country;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import com.scrapper.country.model.Country;
 import org.springframework.stereotype.Service;
 

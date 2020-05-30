@@ -1,6 +1,6 @@
 package com.scrapper.country.model;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

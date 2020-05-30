@@ -1,6 +1,6 @@
 package com.scrapper.infections;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import com.scrapper.country.model.Country;
 import com.scrapper.infections.model.Infection;
 import org.springframework.stereotype.Service;

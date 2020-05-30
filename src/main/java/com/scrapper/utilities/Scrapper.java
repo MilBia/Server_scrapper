@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import com.scrapper.country.model.Country;
 import com.scrapper.infections.model.Infection;
 import org.jsoup.Jsoup;

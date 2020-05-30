@@ -1,6 +1,6 @@
 package com.scrapper.country.repository;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import com.scrapper.country.model.Country;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

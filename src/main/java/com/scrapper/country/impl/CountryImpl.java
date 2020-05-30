@@ -1,6 +1,6 @@
 package com.scrapper.country.impl;
 
-import com.scrapper.Continect.Continent;
+import com.scrapper.continect.Continent;
 import com.scrapper.country.CountryService;
 import com.scrapper.country.model.Country;
 import com.scrapper.country.repository.CountryRepository;
