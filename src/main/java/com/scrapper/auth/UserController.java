@@ -56,11 +56,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/logout")
-    public ResponseEntity logout(@CookieValue(value = "user", defaultValue = "") String userCredential) {
+    public ResponseEntity logout(@CookieValue(value = "user", defaultValue = "") String userCredential, HttpServletResponse response) {
         Cookie cookie = new Cookie("user", "");
+        Cookie cookieUser = new Cookie("username", "");
         cookie.setMaxAge(1);
+        cookie.setMaxAge(1);
+        response.addCookie(cookie);
+        response.addCookie(cookieUser);
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
     }
 

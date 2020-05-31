@@ -3,7 +3,7 @@ var auApp = angular.module("auApp", ['ngCookies']);
 auApp.controller("auCtrl", function ($scope, $http, $cookies) {
     $http.get('http://localhost:8080/hash_passes').then(function (response) {
         var userRole = $cookies.get("user");
-        if( userRole != null) {
+        if( userRole != null && userRole != "" ) {
             $scope.isLogIn = true;
             $scope.user = $cookies.get("username");
             if (userRole === "ADMIN") {
@@ -31,6 +31,8 @@ auApp.controller("auCtrl", function ($scope, $http, $cookies) {
         })
     }
     $scope.logOut = function () {
-        $http.get('http://localhost:8080/logout').then(function (response) {})
+        $http.get('http://localhost:8080/logout').then(function (response) {
+            window.location = window.location;
+        })
     }
 })
