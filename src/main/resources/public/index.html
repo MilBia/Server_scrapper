@@ -10,10 +10,24 @@
 
 <div class="w3-container w3-animate-opacity">
 
+    <div align="right" ng-app="auApp" ng-controller="auCtrl">
+        <div ng-if="!isLogIn">
+            Login:
+            <input type="text" name="$scope.username" ng-model="username">
+            Password:
+            <input type="password" name="$scope.password" ng-model="password">
+            <button ng-click="logIn(username,password)">Login</button>
+        </div>
+        <div ng-if="isLogIn">
+            {{user}}
+            <button ng-click="logOut()">Logout</button>
+        </div>
+    </div>
+
     <div align="center" ng-app="topBarApp" ng-controller="topBarCtrl">
         <img ng-click="changeView('/')" src="https://cdn.pixabay.com/photo/2016/11/09/16/24/virus-1812092_960_720.jpg" height="200"/>
-        <br>
-        <button ng-click="UpdateData()">Update Data</button>
+        <br/>
+        <button align="right" ng-click="UpdateData()">Update Data</button>
     </div>
 
     <div align="center">
@@ -71,11 +85,13 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-cookies.js"></script>
 <script src="scripts/continents.js"></script>
 <script src="scripts/countries.js"></script>
 <script src="scripts/topBar.js"></script>
+<script src="scripts/user.js"></script>
 <script>
-    var rootApp = angular.module('rootApp', ['continentsApp', 'countrysApp', 'topBarApp']);
+    var rootApp = angular.module('rootApp', ['continentsApp', 'countrysApp', 'topBarApp', 'auApp']);
 </script>
 
 </body>

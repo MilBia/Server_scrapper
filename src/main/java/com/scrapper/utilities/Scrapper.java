@@ -35,6 +35,7 @@ public class Scrapper {
         Element table = doc.getElementById("main_table_countries_today");
         Elements table_data = table.select("tbody").first().getElementsByTag("tr");
         Collection<Infection> infections = new ArrayList<Infection>();
+        LocalDateTime downloadTime = LocalDateTime.now();
         for (Element el : table_data) {
             if(!el.className().contains("total_row_world")) {
                 Elements row = el.getElementsByTag("td");
@@ -47,7 +48,7 @@ public class Scrapper {
                 country.setContinent(continentObj);
                 Infection infection = new Infection();
                 infection.setCountry(country);
-                infection.setCreationTime(LocalDateTime.now());
+                infection.setCreationTime(downloadTime);
                 infection.setTotalCases(Scrapper.ParseToInteger(row.get(2).text()));
                 infection.setNewCases(Scrapper.ParseToInteger(row.get(3).text()));
                 infection.setTotalDeaths(Scrapper.ParseToInteger(row.get(4).text()));
