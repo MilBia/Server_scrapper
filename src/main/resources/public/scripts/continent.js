@@ -23,6 +23,11 @@ continentApp.controller("continentCtrl", function ($scope, $http) {
                 for(var i = 0 ; i < len; i++){
                     $scope.chart_data[key].push([$scope.continent[i].country.name, $scope.continent[i][key]])
                 }
+                $scope.chart_data[key].sort(function (a, b) {
+                    if(a[0] === "Country")
+                        return 0;
+                    return b[1] - a[1];
+                });
             }
         }
     })

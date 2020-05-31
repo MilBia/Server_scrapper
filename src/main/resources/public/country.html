@@ -17,8 +17,41 @@
     </div>
 
     <div align="center" ing-app="countryApp" ng-controller="countryCtrl">
-        <h1>COUNTRY: {{country.country.name}}</h1>
-        <h4>data from: {{country.creationTime}}</h4>
+
+        <div ng-if="country.country.name">
+            <h1>COUNTRY: {{country.country.name}}</h1>
+            <h4>data from: {{country.creationTime}}</h4>
+        </div>
+        <div ng-if="!country.country.name">
+            <h1>COUNTRY: {{country[0].country.name}}</h1>
+            <table class="w3-table" align="center" width="100%">
+                <tr>
+                    <th width="33%" align="center">
+                        <div ng-if="current_date < (sorted.length-1)">
+                            <button ng-click="changeDate(1)"> << {{sorted[current_date+1]}} << </button>
+                        </div>
+                    </th>
+                    <th width="33%" align="center">
+                        <h4>
+                            data from: {{sorted[current_date]}}
+                        </h4>
+                    </th>
+                    <th width="33%" align="center">
+                        <div ng-if="current_date > 0">
+                            <button ng-click="changeDate(-1)"> >> {{sorted[current_date-1]}} >> </button>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+        </div>
+
+<!--        <div ng-if="current_date < (sorted.length-1)">-->
+<!--            <button ng-click="changeDate(1)">{{sorted[current_date+1]}}</button>-->
+<!--        </div>-->
+<!--        <div ng-if="current_date > 0">-->
+<!--            <button ng-click="changeDate(-1)">{{sorted[current_date-1]}}</button>-->
+<!--        </div>-->
+
         <table class="w3-table" align="center" width="60%">
             <tr ng-repeat="chart in chart_data">
                 <th>
@@ -36,6 +69,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-cookies.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="scripts/topBar.js"></script>
 <script src="scripts/country.js"></script>

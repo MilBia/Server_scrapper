@@ -3,7 +3,7 @@ var auApp = angular.module("auApp", ['ngCookies']);
 auApp.controller("auCtrl", function ($scope, $http, $cookies) {
     $http.get('http://localhost:8080/hash_passes').then(function (response) {
         var userRole = $cookies.get("user");
-        if( userRole != null && userRole != "" ) {
+        if( userRole != null && userRole !== "" ) {
             $scope.isLogIn = true;
             $scope.user = $cookies.get("username");
             if (userRole === "ADMIN") {
