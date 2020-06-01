@@ -17,8 +17,32 @@
     </div>
 
     <div align="center" ing-app="continentApp" ng-controller="continentCtrl">
+        <div ng-if="!isAdmin">
         <h1>CONTINENT: {{continent[0].country.continent}}</h1>
         <h4>data from: {{continent[0].creationTime}}</h4>
+        </div>
+        <div ng-if="isAdmin">
+            <h1>CONTINENT: {{continent[0][0].country.continent}}</h1>
+            <table class="w3-table" align="center" width="100%">
+                <tr>
+                    <th width="33%" align="center">
+                        <div ng-if="current_date < (sorted.length-1)">
+                            <button ng-click="changeDate(1)"> << {{sorted[current_date+1]}} << </button>
+                        </div>
+                    </th>
+                    <th width="33%" align="center">
+                        <h4>
+                            data from: {{sorted[current_date]}}
+                        </h4>
+                    </th>
+                    <th width="33%" align="center">
+                        <div ng-if="current_date > 0">
+                            <button ng-click="changeDate(-1)"> >> {{sorted[current_date-1]}} >> </button>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+        </div>
         <table class="w3-table" align="center" width="60%">
             <tr ng-repeat="chart in chart_data">
                 <th>
